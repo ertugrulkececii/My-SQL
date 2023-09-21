@@ -101,16 +101,161 @@ from kisiler
 where maas >= 6000 and (adres='istanbul' or adres= 'ankara')
 order by maas desc;
 
+					-- 2. gun grup Calismalari ---------------------------------------
+
+      select * from kisiler;  -- deneme listem kayitli mi diye yapildi
         
+     /* 3 farkli kullanimi var
+
+INSERT INTO table_name (column1, column2, column3, ...)
+VALUES (value1, value2, value3, ...);
+
+-- siralamayi biliyorsak dogrudan degerleri yazariz
+INSERT INTO table_name
+VALUES (value1, value2, value3, ...);
+
+-- birden fazla satir icin
+INSERT INTO table_name
+VALUES  (value1, value2, value3, ...)
+		(value5, value6, value7, ...),
+		(value10, value11, value12, ...);
+*/
+
+
+INSERT INTO kisiler (id, ad, soyad, adres)
+VALUES  (11,'Dilaver','Kara','Bartin');
         
+-- UPDATE taloyu günceller
+-- SET 
+-- telefon ve adresi güncelle
+UPDATE kisiler
+SET telefon = '64131685431', adres = 'Samsun'
+WHERE id = 11;        
         
-        
-        
-        
-        
-        
-        
-        
+UPDATE kisiler
+SET adres = 'Malatya'
+WHERE id = 10 or id =2 ;
+
+-- DELETE FROM table_name WHERE condition;
+delete from kisiler
+where ad = 'Dilaver';
+
+-- LIMIT 
+-- özellikle bu komutta veritablarinda farkliliklar var
+-- MS Access, SQL Server, Oracle da farkli kullaniliyor
+/*
+SELECT sütun_adi
+FROM tablo_adi
+WHERE kosul
+LIMIT yasi;
+*/
+-- En kisa 4 kisinin ad,soyad,maas ve boyunu listeleyin
+select ad, soyad, boy, maas
+from kisiler
+order by boy
+limit 4 ;
+
+-- En uzun 3 kisinin ad,soyad,maas ve boyunu listeleyin
+select ad, soyad, boy, maas
+from kisiler
+order by boy desc
+limit 3 ;
+
+ -- MIN MAX COUNT SUM AVG 
+-- en uzun adan ile en kisa kisileri listeleyin
+-- normalde bunlar group by ile kullanilir 
+-- ancak tekil sonuclar icin kullanilabilir
+
+-- 1 - en uzun kisi kim
+select max(boy)
+from kisiler;
+-- 2 - en kisa kisi kim       
+select min(boy)
+from kisiler;  
+ 
+ select avg(maas)
+from kisiler;
+ 
+ SELECT MAX(maas)   -- en büyük degeri buluyor
+FROM kisiler;
+
+select max(maas)
+from kisiler
+where boy<170;
+select*from kisiler;
+
+select count(adres)
+from kisiler
+where adres= 'Ankara';
+
+-- adresin ikinci harfi a olan   LIKE
+-- maas ortalamasini   AVG
+-- listeleyin
+
+select avg(maas)
+from kisiler
+where adres like '_a%' ;
+
+-- GROUP BY
+-- aggregate fonksiyonlar ile kullanilir
+-- bunlar COUNT(), MAX(), MIN(), SUM(), AVG()
+
+select count(adres), adres
+from kisiler
+group by adres;
+
+-- hangi adresten kac tane var 
+-- sayi sirasina gore büyükten kücüge listeleyin
+select count(adres) as adet, adres
+from kisiler
+group by adres
+order by adet desc;
+
+-- Sehirlerin Maas ortalamasini ve sehirleri yazin
+select avg(maas) as Maas_Ortalamasi, adres
+from kisiler
+group by adres;
+
+-- Sehirlerin Maas ortalamasini ve sehirleri yazin
+-- buyukten kucuge siralayin
+select avg(maas) as Maas_Ortalamasi, adres
+from kisiler
+group by adres;
+order by Maas_Ortalamasi desc;
+
+SELECT sum(maas)as maas_toplami, adres as adres
+FROM kisiler
+GROUP BY adres
+ORDER BY maas_toplami desc;
+
+-- Mesleklere göre ortalama maas büyükten kücüge siralayalim
+SELECT AVG(maas) AS Maas_Ortalamasi, meslek as meslek
+FROM kisiler
+GROUP BY meslek
+ORDER BY Maas_Ortalamasi DESC;
+
+-- WHERE kullanilabilir mi?
+-- halihazirda var olan veritabanindaki sütunlar üzerinde
+-- kullanilir
+
+-- HAVING  sonradan olusturulan sütunlarda kullanilir
+-- dolayisiyla GROUP BY ile birlikte kullanilir
+
+-- Ortalama maasi 5000 >= olan meslekler 
+
+SELECT AVG(maas) AS Maas_Ortalamasi, meslek as meslek
+FROM kisiler
+GROUP BY meslek
+having Maas_Ortalamasi >=5000
+ORDER BY Maas_Ortalamasi DESC;
+
+
+
+
+
+
+
+
         
         
         
