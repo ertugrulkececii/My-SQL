@@ -249,13 +249,85 @@ GROUP BY meslek
 having Maas_Ortalamasi >=5000
 ORDER BY Maas_Ortalamasi DESC;
 
+-- boyu 169 den >= olanlarin maas ortalamasi 
+select avg(maas) as Maas_Ortalamasi, meslek
+from kisiler
+where boy>= 169 
+group by meslek;
 
+-- boyu 169 den >= olanlarin maas ortalamasi 
+-- maas ort 5000 ile 8000 arasinda olanlar
+select avg(maas) AS maas_ortalama, meslek
+from kisiler
+where boy>=169
+group by meslek
+having maas_ortalama between 5000 and 8000
+order by maas;
 
+CREATE TABLE musteriler (
+    musteri_id INT PRIMARY KEY,
+    musteri_adi VARCHAR(50)
+);
 
+-- orders tablosu
+CREATE TABLE siparisler (
+    siparis_id INT PRIMARY KEY,
+    musteri_id INT,
+    siparis_tarihi DATE,
+    siparis_adi VARCHAR(50)
+); 
 
+INSERT INTO musteriler (musteri_id, musteri_adi) VALUES
+    (1, 'Deniz Kaya'),
+    (2, 'Yagmur Aydin'),
+    (3, 'Bahar Esen'), -- ID 3 diger tabloda yok 
+    (4, 'Gurkan Cam'),
+    (5, 'Cinar Kilic'),
+    (7, 'Ahmet Kaya'); -- ID 7  diger tabloda yok
 
+INSERT INTO siparisler (siparis_id, musteri_id, siparis_tarihi, siparis_adi) VALUES
+    (101, 1, '2023-01-15','Televizyon'),
+    (102, 1, '2023-02-20','Telefon'),
+    (103, 2, '2023-01-10','Laptop'),
+	(104, 2, '2023-01-10','Klavye'),
+    (105, 4, '2023-01-10','Telefon'),
+    (106, 5, '2023-03-05','Monitör'),
+    (107, 6, '2023-03-05','Telefon'),	-- ID 6 diger tabloda yok
+    (108, 8, '2023-03-05','Pil'); 		-- ID 8 diger tabloda yok 
 
+select * from musteriler;
+select*from siparisler;
 
-        
-        
+select *
+from musteriler
+inner join siparisler
+on musteriler.musteri_id = siparisler.musteri_id;
+
+-- musteri_id ye göre B>K siralayin
+select *
+from musteriler
+inner join siparisler
+on musteriler.musteri_id = siparisler.musteri_id
+order by musteriler.musteri_id desc;
+
+-- siparis id ye göre siralayin 
+-- ad, musteri id, siparis tarihi ve siparis adi listeleyin
+SELECT musteriler.musteri_adi, musteriler.musteri_id, siparisler.siparis_id, siparisler.siparis_id
+FROM musteriler
+INNER JOIN siparisler
+ON musteriler.musteri_id = siparisler.musteri_id
+ORDER BY siparisler.siparis_id;
+
+select *
+from musteriler
+left join siparisler
+on musteriler.musteri_id= siparisler.musteri_id;
+
+-- right join
+  select *
+from musteriler
+right join siparisler
+on musteriler.musteri_id= siparisler.musteri_id;      
+      
+      select * from musteriler;
         
